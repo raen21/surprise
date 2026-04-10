@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>У меня есть вопрос... 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .kitten-img {
+            width: 280px;
+            height: 280px;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.12));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .question {
+            font-size: 28px;
+            color: #880e4f;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .btn-yes {
+            padding: 15px 40px;
+            font-size: 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #e91e63, #f06292);
+            color: white;
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(233, 30, 99, 0.6);
+        }
+
+        .btn-no {
+            padding: 15px 40px;
+            font-size: 20px;
+            border: 2px solid #e91e63;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: white;
+            color: #e91e63;
+            position: absolute;
+            user-select: none;
+        }
+
+        .btn-no:hover {
+            background: #fce4ec;
+        }
+
+        /* Screen 3 — celebration */
+        #screen3 {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7);
+        }
+
+        .celebration {
+            font-size: 48px;
+            color: #2e7d32;
+            font-weight: 700;
+            text-align: center;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .celebration-sub {
+            font-size: 24px;
+            color: #388e3c;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: fall linear forwards;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% { opacity: 1; transform: translateY(-50px) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .kitten-celebration {
+            width: 250px;
+            height: 250px;
+            margin-bottom: 30px;
+            animation: spin-float 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.12));
+        }
+
+        @keyframes spin-float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .no-escape-count {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #880e4f;
+            display: none;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-escape-count" id="escapeCounter"></div>
+
+    <!-- Экран 1 -->
+    <div class="screen active" id="screen1">
+        <svg class="kitten-img" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Body -->
+            <ellipse cx="150" cy="200" rx="90" ry="80" fill="#f5c6aa"/>
+            <!-- Head -->
+            <circle cx="150" cy="120" r="70" fill="#f5c6aa"/>
+            <!-- Left ear -->
+            <polygon points="95,70 80,15 120,55" fill="#f5c6aa"/>
+            <polygon points="100,65 88,28 115,55" fill="#ffb6c1"/>
+            <!-- Right ear -->
+            <polygon points="205,70 220,15 180,55" fill="#f5c6aa"/>
+            <polygon points="200,65 212,28 185,55" fill="#ffb6c1"/>
+            <!-- Eyes -->
+            <ellipse cx="120" cy="115" rx="18" ry="20" fill="white"/>
+            <ellipse cx="180" cy="115" rx="18" ry="20" fill="white"/>
+            <ellipse cx="122" cy="118" rx="12" ry="13" fill="#2c1810"/>
+            <ellipse cx="178" cy="118" rx="12" ry="13" fill="#2c1810"/>
+            <!-- Eye shine -->
+            <circle cx="127" cy="112" r="5" fill="white"/>
+            <circle cx="183" cy="112" r="5" fill="white"/>
+            <!-- Nose -->
+            <ellipse cx="150" cy="140" rx="6" ry="4" fill="#ff8a9e"/>
+            <!-- Mouth -->
+            <path d="M140,148 Q150,158 160,148" stroke="#2c1810" stroke-width="2" fill="none"/>
+            <path d="M150,148 Q150,155 145,158" stroke="#2c1810" stroke-width="1.5" fill="none"/>
+            <path d="M150,148 Q150,155 155,158" stroke="#2c1810" stroke-width="1.5" fill="none"/>
+            <!-- Whiskers -->
+            <line x1="90" y1="130" x2="125" y2="138" stroke="#2c1810" stroke-width="1.5"/>
+            <line x1="88" y1="142" x2="124" y2="142" stroke="#2c1810" stroke-width="1.5"/>
+            <line x1="175" y1="138" x2="210" y2="130" stroke="#2c1810" stroke-width="1.5"/>
+            <line x1="176" y1="142" x2="212" y2="142" stroke="#2c1810" stroke-width="1.5"/>
+            <!-- Blush -->
+            <ellipse cx="105" cy="138" rx="12" ry="8" fill="#ffb6c1" opacity="0.5"/>
+            <ellipse cx="195" cy="138" rx="12" ry="8" fill="#ffb6c1" opacity="0.5"/>
+            <!-- Paws -->
+            <ellipse cx="115" cy="270" rx="25" ry="15" fill="#f5c6aa"/>
+            <ellipse cx="185" cy="270" rx="25" ry="15" fill="#f5c6aa"/>
+            <!-- Paw details -->
+            <circle cx="108" cy="268" r="5" fill="#ffb6c1"/>
+            <circle cx="120" cy="268" r="5" fill="#ffb6c1"/>
+            <circle cx="178" cy="268" r="5" fill="#ffb6c1"/>
+            <circle cx="190" cy="268" r="5" fill="#ffb6c1"/>
+            <!-- Tail -->
+            <path d="M60,220 Q30,180 50,150" stroke="#f5c6aa" stroke-width="16" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="question">Пойдёшь со мной на свидание? 💕</div>
+        <div class="buttons">
+            <button class="btn-yes" onclick="goToScreen2()">Хорошо 😊</button>
+            <button class="btn-no" id="btnNo1" onclick="escapeButton(this)">Нет, не пойду</button>
+        </div>
+    </div>
+
+    <!-- Экран 2 -->
+    <div class="screen" id="screen2">
+        <svg class="kitten-img" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Body -->
+            <ellipse cx="150" cy="200" rx="90" ry="80" fill="#d4a8e0"/>
+            <!-- Head -->
+            <circle cx="150" cy="120" r="70" fill="#d4a8e0"/>
+            <!-- Left ear -->
+            <polygon points="95,70 80,15 120,55" fill="#d4a8e0"/>
+            <polygon points="100,65 88,28 115,55" fill="#f8c8dc"/>
+            <!-- Right ear -->
+            <polygon points="205,70 220,15 180,55" fill="#d4a8e0"/>
+            <polygon points="200,65 212,28 185,55" fill="#f8c8dc"/>
+            <!-- Eyes — big sparkly -->
+            <ellipse cx="120" cy="112" rx="22" ry="24" fill="white"/>
+            <ellipse cx="180" cy="112" rx="22" ry="24" fill="white"/>
+            <ellipse cx="123" cy="116" rx="14" ry="15" fill="#6a3d7d"/>
+            <ellipse cx="177" cy="116" rx="14" ry="15" fill="#6a3d7d"/>
+            <!-- Eye shine -->
+            <circle cx="130" cy="108" r="6" fill="white"/>
+            <circle cx="184" cy="108" r="6" fill="white"/>
+            <circle cx="118" cy="120" r="3" fill="white"/>
+            <circle cx="172" cy="120" r="3" fill="white"/>
+            <!-- Nose -->
+            <ellipse cx="150" cy="140" rx="6" ry="4" fill="#ff8aaf"/>
+            <!-- Mouth — smile -->
+            <path d="M137,150 Q150,163 163,150" stroke="#4a2a5a" stroke-width="2" fill="none"/>
+            <!-- Whiskers -->
+            <line x1="88" y1="132" x2="123" y2="139" stroke="#4a2a5a" stroke-width="1.5"/>
+            <line x1="85" y1="145" x2="122" y2="144" stroke="#4a2a5a" stroke-width="1.5"/>
+            <line x1="177" y1="139" x2="212" y2="132" stroke="#4a2a5a" stroke-width="1.5"/>
+            <line x1="178" y1="144" x2="215" y2="145" stroke="#4a2a5a" stroke-width="1.5"/>
+            <!-- Blush -->
+            <ellipse cx="103" cy="140" rx="13" ry="9" fill="#ffb6c1" opacity="0.6"/>
+            <ellipse cx="197" cy="140" rx="13" ry="9" fill="#ffb6c1" opacity="0.6"/>
+            <!-- Paws -->
+            <ellipse cx="115" cy="270" rx="25" ry="15" fill="#d4a8e0"/>
+            <ellipse cx="185" cy="270" rx="25" ry="15" fill="#d4a8e0"/>
+            <circle cx="108" cy="268" r="5" fill="#f8c8dc"/>
+            <circle cx="120" cy="268" r="5" fill="#f8c8dc"/>
+            <circle cx="178" cy="268" r="5" fill="#f8c8dc"/>
+            <circle cx="190" cy="268" r="5" fill="#f8c8dc"/>
+            <!-- Bow tie -->
+            <polygon points="140,170 150,180 160,170 150,175" fill="#ff69b4"/>
+            <polygon points="140,185 150,175 160,185 150,180" fill="#ff69b4"/>
+            <circle cx="150" cy="178" r="4" fill="#ff1493"/>
+            <!-- Tail -->
+            <path d="M240,220 Q270,180 250,150" stroke="#d4a8e0" stroke-width="16" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="question">Точно пойдёшь? 🥺</div>
+        <div class="buttons">
+            <button class="btn-yes" onclick="goToScreen3()">Да, точно! 💖</button>
+            <button class="btn-no" id="btnNo2" onclick="escapeButton(this)">Нет, не пойду</button>
+        </div>
+    </div>
+
+    <!-- Экран 3 — Ура! -->
+    <div class="screen" id="screen3">
+        <div class="hearts" id="heartsContainer"></div>
+        <svg class="kitten-celebration" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Body -->
+            <ellipse cx="150" cy="210" rx="85" ry="75" fill="#ffe0b2"/>
+            <!-- Head -->
+            <circle cx="150" cy="125" r="68" fill="#ffe0b2"/>
+            <!-- Left ear -->
+            <polygon points="97,75 82,20 122,60" fill="#ffe0b2"/>
+            <polygon points="101,70 90,32 117,60" fill="#ffb6c1"/>
+            <!-- Right ear -->
+            <polygon points="203,75 218,20 178,60" fill="#ffe0b2"/>
+            <polygon points="199,70 210,32 183,60" fill="#ffb6c1"/>
+            <!-- Eyes — happy closed (^_^) -->
+            <path d="M105,115 Q120,100 135,115" stroke="#5d4037" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M165,115 Q180,100 195,115" stroke="#5d4037" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- Nose -->
+            <ellipse cx="150" cy="132" rx="5" ry="4" fill="#ff8a9e"/>
+            <!-- Big happy mouth -->
+            <path d="M130,142 Q150,165 170,142" stroke="#5d4037" stroke-width="2.5" fill="#ff8a80" fill-opacity="0.3"/>
+            <!-- Whiskers -->
+            <line x1="90" y1="128" x2="122" y2="134" stroke="#5d4037" stroke-width="1.5"/>
+            <line x1="88" y1="140" x2="121" y2="138" stroke="#5d4037" stroke-width="1.5"/>
+            <line x1="178" y1="134" x2="210" y2="128" stroke="#5d4037" stroke-width="1.5"/>
+            <line x1="179" y1="138" x2="212" y2="140" stroke="#5d4037" stroke-width="1.5"/>
+            <!-- Blush -->
+            <ellipse cx="108" cy="133" rx="14" ry="9" fill="#ffb6c1" opacity="0.6"/>
+            <ellipse cx="192" cy="133" rx="14" ry="9" fill="#ffb6c1" opacity="0.6"/>
+            <!-- Raised paws (celebrating!) -->
+            <ellipse cx="80" cy="190" rx="22" ry="18" fill="#ffe0b2" transform="rotate(-30 80 190)"/>
+            <ellipse cx="220" cy="190" rx="22" ry="18" fill="#ffe0b2" transform="rotate(30 220 190)"/>
+            <circle cx="73" cy="185" r="4" fill="#ffb6c1"/>
+            <circle cx="85" cy="183" r="4" fill="#ffb6c1"/>
+            <circle cx="215" cy="183" r="4" fill="#ffb6c1"/>
+            <circle cx="227" cy="185" r="4" fill="#ffb6c1"/>
+            <!-- Heart above head -->
+            <path d="M140,30 C140,20 125,10 125,25 C125,35 140,45 140,45 C140,45 155,35 155,25 C155,10 140,20 140,30Z" fill="#e91e63"/>
+            <!-- Stars around -->
+            <text x="60" y="60" font-size="20">✨</text>
+            <text x="220" y="50" font-size="18">⭐</text>
+            <text x="240" y="260" font-size="16">✨</text>
+            <text x="50" y="250" font-size="18">💫</text>
+            <!-- Tail -->
+            <path d="M60,240 Q25,200 45,170" stroke="#ffe0b2" stroke-width="14" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="celebration">УРА! 🎉</div>
+        <div class="celebration-sub">Спасибо! Я так рад(а)! 💕</div>
+    </div>
+
+    <script>
+        let escapeCount = 0;
+
+        const phrases = [
+            "Не-не, попробуй ещё раз 😏",
+            "Ты точно хочешь нажать сюда? 🤔",
+            "Я убегаю! 🏃",
+            "Не поймаешь! 😜",
+            "Может всё-таки Хорошо? 🥺",
+            "Кнопка сбежала! 🐱",
+            "Попробуй лучше другую кнопку 💕",
+            "Нет — это не вариант! 😂",
+        ];
+
+        function escapeButton(btn) {
+            escapeCount++;
+            const counter = document.getElementById('escapeCounter');
+            counter.style.display = 'block';
+            counter.textContent = `Попыток сбежать: ${escapeCount} 😼`;
+
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+
+            let newX, newY;
+            do {
+                newX = Math.random() * maxX;
+                newY = Math.random() * maxY;
+            } while (
+                Math.abs(newX - btn.offsetLeft) < 100 &&
+                Math.abs(newY - btn.offsetTop) < 100
+            );
+
+            btn.style.position = 'fixed';
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+            btn.style.zIndex = '100';
+            btn.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+
+            // Show a random phrase
+            const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+            btn.textContent = phrase;
+
+            // Reset text after a moment
+            setTimeout(() => {
+                btn.textContent = "Нет, не пойду";
+            }, 800);
+        }
+
+        function goToScreen2() {
+            document.getElementById('screen1').classList.remove('active');
+            document.getElementById('screen2').classList.add('active');
+            document.getElementById('escapeCounter').style.display = 'none';
+            escapeCount = 0;
+
+            // Reset no-button position
+            const btn = document.getElementById('btnNo2');
+            btn.style.position = 'absolute';
+            btn.style.left = '';
+            btn.style.top = '';
+        }
+
+        function goToScreen3() {
+            document.getElementById('screen2').classList.remove('active');
+            document.getElementById('screen3').classList.add('active');
+            document.getElementById('escapeCounter').style.display = 'none';
+            launchHearts();
+        }
+
+        function launchHearts() {
+            const container = document.getElementById('heartsContainer');
+            const emojis = ['💕', '❤️', '💖', '💗', '💘', '💝', '🌹', '✨', '🎉'];
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+                    heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+                    container.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 5000);
+                }, i * 100);
+            }
+
+            // Keep hearts coming
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+                heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
